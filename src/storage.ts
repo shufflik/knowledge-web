@@ -1,4 +1,4 @@
-import { AppState, Note, Topic } from './types';
+import { AppState, Note } from './types';
 
 const STORAGE_KEY = 'knowledge2_state_v1';
 
