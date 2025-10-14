@@ -2,7 +2,7 @@
   --bottom-bar-space: 88px;
 }
 .screen {
-  min-height: 100vh;
+  min-height: 100dvh; /* more reliable on mobile */
   display: flex;
   flex-direction: column;
   background: #0c0c0f;

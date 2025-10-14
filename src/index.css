@@ -7,6 +7,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #0c0c0f;
   color: #f6f7fb;
+  overscroll-behavior: none;
+  touch-action: manipulation; /* helps prevent double-tap zoom */
 }
 
 code {

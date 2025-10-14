@@ -20,44 +20,13 @@ function App() {
   const [editingNote, setEditingNote] = React.useState<Note | undefined>(undefined);
   const [searchMode, setSearchMode] = React.useState<SearchMode>('notes');
   const [toasts, setToasts] = React.useState<ToastMessage[]>([]);
-  type TgInfo = {
-    platform?: string;
-    colorScheme?: string;
-    version?: string;
-    user?: { id?: number; first_name?: string; last_name?: string; username?: string; language_code?: string };
-  };
-  const [tgInfo, setTgInfo] = React.useState<TgInfo | null>(null);
   const topicsLoadRequested = React.useRef<boolean>(false);
   const [topicsLoading, setTopicsLoading] = React.useState<boolean>(false);
   const [topicsError, setTopicsError] = React.useState<string | null>(null);
 
   React.useEffect(() => { saveState(state); }, [state]);
 
-  // Telegram WebApp readiness check stub
-  React.useEffect(() => {
-    try {
-      const wa = (window as any).Telegram?.WebApp;
-      if (wa && typeof wa.ready === 'function') {
-        wa.ready();
-        showToast('Telegram WebApp detected', 'success');
-        const info: TgInfo = {
-          platform: wa.platform,
-          colorScheme: wa.colorScheme,
-          version: wa.version,
-          user: wa.initDataUnsafe?.user ? {
-            id: wa.initDataUnsafe.user.id,
-            first_name: wa.initDataUnsafe.user.first_name,
-            last_name: wa.initDataUnsafe.user.last_name,
-            username: wa.initDataUnsafe.user.username,
-            language_code: wa.initDataUnsafe.user.language_code,
-          } : undefined,
-        };
-        setTgInfo(info);
-      } else {
-        // no-op outside Telegram
-      }
-    } catch {}
-  }, []);
+  
 
   const showToast = (message: string, type: ToastMessage['type'] = 'error') => {
     const id = `toast-${Date.now()}-${Math.random()}`;
@@ -386,21 +355,7 @@ function App() {
               topicsError={topicsError}
               onEditTopic={(id) => setShowEditTopicId(id)}
             />
-            {tgInfo && (
-              <div className="card" style={{ marginTop: 8, padding: '8px 10px', fontSize: 12, opacity: 0.9 }}>
-                <div className="row" style={{ justifyContent: 'space-between', gap: 8 }}>
-                  <div>Telegram: {tgInfo.platform || 'unknown'} · {tgInfo.colorScheme || 'color-scheme?'}</div>
-                  {tgInfo.version && <div style={{ opacity: 0.8 }}>v{tgInfo.version}</div>}
-                </div>
-                {tgInfo.user && (
-                  <div style={{ marginTop: 6, opacity: 0.9 }}>
-                    Пользователь: {tgInfo.user.username ? `@${tgInfo.user.username}` : tgInfo.user.first_name}
-                    {tgInfo.user.id ? ` · id: ${tgInfo.user.id}` : ''}
-                    {tgInfo.user.language_code ? ` · ${tgInfo.user.language_code}` : ''}
-                  </div>
-                )}
-              </div>
-            )}
+            
           </div>
           {showEditTopicId && (() => {
             const t = state.topics.find(x => x.id === showEditTopicId);
