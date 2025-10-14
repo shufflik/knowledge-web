@@ -1,0 +1,454 @@
+.screen:root, :root {
+  --bottom-bar-space: 88px;
+}
+.screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0c0c0f;
+  color: #f6f7fb;
+}
+
+.center-mode {
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden; /* prevent body scroll when centered */
+}
+
+.screen-content {
+  flex: 1;
+  padding: 16px;
+  padding-bottom: var(--bottom-bar-space); /* space for bottom bar */
+}
+
+.screen-content.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-bottom: var(--bottom-bar-space);
+  overflow: hidden;
+}
+
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20,20,26,0.9);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+}
+
+.overlay-blocker {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1100;
+  animation: overlayFadeIn 180ms ease-out both;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.modal-container {
+  width: min(100%, 440px);
+  margin: 0 auto;
+  animation: modalAppear 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255,255,255,0.2);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Smaller spinner variant for compact places (e.g., topics dropdown) */
+.spinner--sm {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top-color: #ffffff;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Modal animations */
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-overlay {
+    animation: none;
+  }
+  .modal-container {
+    animation: none;
+  }
+}
+
+.primary-button {
+  appearance: none;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(79,70,229,0.35);
+}
+
+.search-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 120px);
+}
+
+.search-field {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  background: #15161a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  color: #f6f7fb;
+  padding: 14px 16px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.search-button {
+  background: #1e2030;
+  border: none;
+  color: #fff;
+  padding: 0 16px;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 0.35fr));
+  gap: 12px;
+  justify-content: center; /* side gutters absorb extra space; gaps stay constant */
+}
+
+/* Enter animation for note cards */
+.card-enter {
+  animation: zoomBounce 0.6s ease-out;
+}
+
+@keyframes zoomBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.85); /* Начальный размер меньше обычного */
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.03); /* Увеличение до чуть большего размера */
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1); /* Увеличение до чуть большего размера */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1); /* Возвращение к обычному размеру */
+  }
+}
+
+.card {
+  background: #14151a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 12px;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent; /* remove mobile tap highlight */
+}
+
+/* Also remove tap highlight for descendants to avoid gray overlay on long-press */
+.card * { -webkit-tap-highlight-color: transparent; }
+
+/* Inner container for NoteViewer to create the bordered inset block */
+.viewer-inner {
+  margin-top: 12px;
+  background: #111219; /* slightly darker to create separation */
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px 14px 0 0;
+  padding: 14px;
+}
+
+.viewer-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  min-width: 0; /* allow flex text to shrink for ellipsis */
+  height: 48px; /* provide a box to center within */
+}
+
+.viewer-preview {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* stable box, scales with width */
+  max-height: 80vh; /* cap on very tall viewports */
+  background: #0c0c0f;
+  border-radius: 10px;
+  overflow: hidden; /* clip overflow to avoid any gaps */
+}
+
+.viewer-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fill without letterboxing; crop if needed */
+  display: block;
+}
+
+/* Smaller, contained preview inside NoteEditor to avoid stretching the form width */
+.editor-preview {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center; /* center within the form */
+}
+
+.editor-preview-thumb {
+  width: 100%;
+  max-width: 300px; /* cap preview width so the form does not widen */
+  aspect-ratio: 16 / 9;
+  background: #0f1014;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.editor-preview-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Footer area inside the viewer with distinct background */
+.viewer-footer {
+  background: rgba(27,29,36,0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0 0 12px 12px;
+  padding: 10px;
+  display: flex;
+  align-items: center; /* vertical center */
+  justify-content: space-between; /* horizontal center */
+  gap: 16px;
+}
+
+.card-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0f1014;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-footer {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.badges-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Increase spacing only between icons (right badges row) */
+.card-footer .badges-row:first-child {
+  margin-right: 3px; /* fixed spacing between left badge row and right icons */
+}
+
+/* Make topic badge responsive in cards: allow left badges row to shrink and ellipsize */
+.card-footer .badges-row:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-footer .badges-row:first-child .topic-badge {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chip-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chip-close {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: #eaeaf0;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dropdown-suggest {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #15161a;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  max-height: 220px;
+  overflow: auto;
+  z-index: 50;
+}
+
+.dropdown-item {
+  padding: 10px 12px;
+  color: #eaeaf0;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 4px 8px;
+  background: #1b1d24;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 999px;
+}
+
+.topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pill {
+  background: #1b1d24;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #eaeaf0;
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+
+.icon-button {
+  background: #1b1d24;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #eaeaf0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inline-input {
+  width: 100%;
+  background: #101116;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.row .inline-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.img-thumb {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.divider {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin: 10px 0;
+}
+
+

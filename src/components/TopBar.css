@@ -1,0 +1,149 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  background: #0c0c0f;
+  z-index: 10;
+  padding: 12px 8px;
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 520px;
+  width: 100%;
+  transition: all 0.25s ease;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.field-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #15161a;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #fff;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.combobox {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #15161a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.combobox select {
+  flex: 1;
+  background: transparent;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  outline: none;
+}
+
+.input-ghost {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #15161a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.input-ghost input {
+  flex: 1;
+  background: transparent;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  outline: none;
+}
+
+.input-ghost select.pill {
+  margin: 0 6px 0 10px;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #15161a;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1l5 5 5-5' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.8'/></svg>"); /* белая стрелка */
+  background-repeat: no-repeat;
+  background-position: right 10px center; /* сдвиг ближе к тексту */
+  padding-right: 28px; /* место под стрелку */
+}
+
+/* Remove focus ring/glow for the select pill inside input-ghost */
+.input-ghost select.pill:focus,
+.input-ghost select.pill:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Remove iOS tap highlight */
+.input-ghost select.pill { -webkit-tap-highlight-color: transparent; }
+
+.topic-dropdown {
+  width: 100%;
+  overflow: hidden;
+  transform-origin: top center;
+  will-change: transform, opacity, max-height;
+  animation: dropdownOpen 420ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* Make topic list scrollable inside the dropdown */
+.topic-dropdown .topic-list {
+  max-height: 320px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@keyframes dropdownOpen {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0) scaleY(0.98);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scaleY(1);
+    max-height: 520px; /* достаточная высота, чтобы контент плавно раздвигал макет */
+  }
+}
+
+/* .error-text {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: 6px;
+  padding-left: 8px;
+} */
+
+.hidden {
+  width: 48px;
+  justify-content: center;
+}
+
+.center-onboarding {
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  align-items: center;
+}
+
+
