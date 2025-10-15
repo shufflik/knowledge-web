@@ -1,5 +1,5 @@
 .screen:root, :root {
-  --bottom-bar-space: 88px;
+  --bottom-bar-space: clamp(60px, 20.3vw, 88px);
 }
 .screen {
   min-height: 100dvh; /* more reliable on mobile */
@@ -28,7 +28,7 @@
   align-items: center;
   justify-content: center;
   gap: clamp(8px, 2.7vw, 12px);
-  padding-bottom: var(--bottom-bar-space);
+  padding-bottom: 0;
   overflow: hidden;
 }
 
@@ -43,6 +43,7 @@
   display: flex;
   justify-content: center;
   box-sizing: border-box;
+  z-index: 20;
 }
 
 /* Скрывать bottom-bar на маленьких высотах экрана (когда клавиатура открыта) */
@@ -184,7 +185,7 @@
 
 .list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 0.35fr));
+  grid-template-columns: repeat(auto-fit, minmax(165px, 0.35fr));
   gap: 12px;
   justify-content: center; /* side gutters absorb extra space; gaps stay constant */
 }
@@ -417,8 +418,8 @@
   border: 1px solid rgba(255,255,255,0.06);
   color: #eaeaf0;
   border-radius: 999px;
-  padding: clamp(3px, 1.3vw, 8px) clamp(5px, 2vw, 12px);
-  font-size: clamp(11px, 2.4vw, 15px);
+  padding: clamp(3px, 2.5vw, 8px) clamp(5px, 3vw, 12px);
+  font-size: clamp(13px, 2.4vw, 15px);
   box-sizing: border-box;
 }
 
@@ -426,8 +427,8 @@
   background: #1b1d24;
   border: 1px solid rgba(255,255,255,0.08);
   color: #eaeaf0;
-  width: clamp(22px, 5.8vw, 25px);
-  height: clamp(22px, 5.8vw, 25px);
+  width: clamp(22px, 7.8vw, 50px);
+  height: clamp(22px, 7.8vw, 50px);
   border-radius: 50%;
   display: inline-flex;
   align-items: center;

@@ -80,7 +80,7 @@
   color: #fff;
   border: none;
   padding: clamp(5px, 2vw, 12px);
-  font-size: clamp(12px, 2.7vw, 16px);
+  font-size: clamp(13px, 2.7vw, 16px);
   outline: none;
   min-width: 0;
   box-sizing: border-box;
@@ -175,8 +175,8 @@
 }
 
 .topic-icon-wrapper {
-  width: clamp(1.125rem, 4vw, 2rem);
-  height: clamp(1.125rem, 4vw, 2rem);
+  width: clamp(2rem, 4vw, 2.2rem);
+  height: clamp(2rem, 4vw, 2.2rem);
   aspect-ratio: 1;
   border-radius: 20%;
   display: flex;
@@ -187,13 +187,13 @@
 }
 
 .topic-icon-wrapper svg {
-  width: clamp(9px, 3vw, 16px);
-  height: clamp(9px, 3vw, 16px);
+  width: clamp(9px, 4vw, 16px);
+  height: clamp(9px, 4vw, 16px);
 }
 
 .topic-name {
   flex: 1;
-  font-size: clamp(0.6875rem, 2.4vw, 0.9375rem);
+  font-size: clamp(0.8rem, 2.4vw, 0.9375rem);
   font-weight: 500;
   color: #eaeaf0;
   overflow: hidden;
@@ -210,8 +210,8 @@
 }
 
 .topic-actions svg {
-  width: clamp(9px, 2.7vw, 16px);
-  height: clamp(9px, 2.7vw, 16px);
+  width: clamp(9px, 3.7vw, 16px);
+  height: clamp(9px, 3.7vw, 16px);
 }
 
 

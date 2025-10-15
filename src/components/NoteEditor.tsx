@@ -187,7 +187,7 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
 
   return (
     <div className="card">
-      <div className="row" style={{ gap: 8, marginBottom: 8 }}>
+      <div className="row" style={{ gap: 'clamp(6px, 2vw, 8px)', marginBottom: 'clamp(6px, 2vw, 8px)' }}>
         <input
           className="inline-input"
           placeholder="Заголовок"
@@ -198,7 +198,7 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
         />
       </div>
       {errors.title && (
-        <div style={{ color: '#ff6b6b', fontSize: 12, marginTop: -4, marginBottom: 8 }}>{errors.title}</div>
+        <div style={{ color: '#ff6b6b', fontSize: 'clamp(11px, 2.4vw, 12px)', marginTop: 'clamp(-3px, -1vw, -4px)', marginBottom: 'clamp(6px, 2vw, 8px)' }}>{errors.title}</div>
       )}
       <textarea
         ref={textRef}
@@ -214,12 +214,12 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
         }}
       />
       {errors.content && (
-        <div style={{ color: '#ff6b6b', fontSize: 12, marginTop: 4 }}>{errors.content}</div>
+        <div style={{ color: '#ff6b6b', fontSize: 'clamp(11px, 2.4vw, 12px)', marginTop: 'clamp(3px, 1vw, 4px)' }}>{errors.content}</div>
       )}
 
       <div className="divider" />
 
-      <div className="row" style={{ gap: 8 }}>
+      <div className="row" style={{ gap: 'clamp(6px, 2vw, 8px)' }}>
         <input
           className="inline-input"
           placeholder="Ссылка (необязательно)"
@@ -228,15 +228,15 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
         />
       </div>
       {url.trim().length > 0 && (
-        <div className="row" style={{ gap: 8, marginTop: 6, alignItems: 'center' }}>
-          <label className="row" style={{ gap: 6, alignItems: 'center', cursor: 'pointer' }}>
+        <div className="row" style={{ gap: 'clamp(6px, 2vw, 8px)', marginTop: 'clamp(4px, 1.5vw, 6px)', alignItems: 'center' }}>
+          <label className="row" style={{ gap: 'clamp(4px, 1.5vw, 6px)', alignItems: 'center', cursor: 'pointer' }}>
             <input type="checkbox" checked={enablePreview} onChange={e => setEnablePreview(e.target.checked)} />
-            <span style={{ fontSize: 12, opacity: 0.85 }}>Показывать превью</span>
+            <span style={{ fontSize: 'clamp(11px, 2.4vw, 12px)', opacity: 0.85 }}>Показывать превью</span>
           </label>
         </div>
       )}
       {enablePreview && url.trim().length > 0 && previewFailed && !loadingPreview && (
-        <div style={{ color: '#ff6b6b', fontSize: 12, marginTop: 4 }}>
+        <div style={{ color: '#ff6b6b', fontSize: 'clamp(11px, 2.4vw, 12px)', marginTop: 'clamp(3px, 1vw, 4px)' }}>
           Невозможно получить превью по ссылке. Вы можете загрузить фото вручную.
         </div>
       )}
@@ -257,7 +257,7 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
 
       <div className="divider" />
 
-      <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
+      <div className="row" style={{ gap: 'clamp(6px, 2vw, 8px)', flexWrap: 'wrap' }}>
         <div style={{ flex: 1, minWidth: 0, position: 'relative' }}>
           <input
             className="inline-input"
@@ -324,7 +324,7 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
             </div>
           )}
           {errors.topic && (
-            <div style={{ color: '#ff6b6b', fontSize: 12, marginTop: 4 }}>{errors.topic}</div>
+            <div style={{ color: '#ff6b6b', fontSize: 'clamp(11px, 2.4vw, 12px)', marginTop: 'clamp(3px, 1vw, 4px)' }}>{errors.topic}</div>
           )}
         </div>
 
@@ -335,7 +335,7 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
       </div>
 
       {attachments.length > 0 && (
-        <div className="row" style={{ marginTop: 8, flexWrap: 'wrap', gap: 8 }}>
+        <div className="row" style={{ marginTop: 'clamp(6px, 2vw, 8px)', flexWrap: 'wrap', gap: 'clamp(6px, 2vw, 8px)' }}>
           {attachments.map(att => (
             <span key={att.id} className="pill chip-file">
               {att.name}
@@ -352,7 +352,7 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
         </div>
       )}
 
-      <div className="row" style={{ marginTop: 25, justifyContent: 'flex-end', gap: 8 }}>
+      <div className="row" style={{ marginTop: 'clamp(12px, 5.8vw, 25px)', justifyContent: 'flex-end', gap: 'clamp(6px, 2vw, 8px)' }}>
         <button className="pill" onClick={onCancel}>Отмена</button>
         <button className="pill" onClick={handleSave}>{isEdit ? 'Сохранить' : 'Создать'}</button>
       </div>

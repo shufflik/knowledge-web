@@ -465,14 +465,36 @@ function App() {
           )}
           {!center && (
             <div className="list" style={{ marginTop: 16 }}>
-              {loading && <div style={{ opacity: 0.7, textAlign: 'center' }}>Поиск...</div>}
+              {loading && (
+                <div style={{ 
+                  opacity: 0.7, 
+                  textAlign: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: 'calc(100vh - 250px)',
+                  fontSize: 'clamp(14px, 3.7vw, 16px)'
+                }}>
+                  Поиск...
+                </div>
+              )}
               {!loading && !error && results.map((n) => (
                 <div key={n.id} className="card-enter">
                   <NoteCard note={n} topics={state.topics} onEdit={handleEditNote} onDelete={(id) => setConfirmDeleteNoteId(id)} onOpen={setViewingNoteId} />
                 </div>
               ))}
               {!loading && !error && results.length === 0 && hasSearched && (
-                <div style={{ opacity: 0.7, textAlign: 'center' }}>Нет заметок</div>
+                <div style={{ 
+                  opacity: 0.7, 
+                  textAlign: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: 'calc(100vh - 250px)',
+                  fontSize: 'clamp(14px, 3.7vw, 16px)'
+                }}>
+                  Нет заметок
+                </div>
               )}
             </div>
           )}
