@@ -7,6 +7,13 @@ declare global {
     Telegram?: {
       WebApp?: {
         initData: string;
+        SettingsButton?: {
+          show: () => void;
+          hide: () => void;
+          onClick: (callback: () => void) => void;
+          offClick: (callback: () => void) => void;
+        };
+        showAlert: (message: string, callback?: () => void) => void;
       };
     };
   }

@@ -26,6 +26,32 @@ function App() {
 
   React.useEffect(() => { saveState(state); }, [state]);
 
+  // Настройка кнопки Settings в Telegram
+  React.useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    if (!tg?.SettingsButton) return;
+
+    const handleSettingsClick = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const screenInfo = `Размер экрана:\n${width} × ${height}px\n\nViewport: ${window.screen.width} × ${window.screen.height}px`;
+      
+      if (tg.showAlert) {
+        tg.showAlert(screenInfo);
+      } else {
+        alert(screenInfo);
+      }
+    };
+
+    tg.SettingsButton.show();
+    tg.SettingsButton.onClick(handleSettingsClick);
+
+    return () => {
+      tg.SettingsButton?.hide();
+      tg.SettingsButton?.offClick(handleSettingsClick);
+    };
+  }, []);
+
   
 
   const showToast = (message: string, type: ToastMessage['type'] = 'error') => {
