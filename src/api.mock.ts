@@ -123,9 +123,10 @@ export async function ensureTopicPathApi(params: {
 
   for (const part of parts) {
     // Try to find existing topic
-    let existing = topics.find(
-      t => t.name === part && t.parentId === currentParentId
-    );
+    const findExistingTopic = (parentId: string | null) => 
+      topics.find(t => t.name === part && t.parentId === parentId);
+    
+    let existing = findExistingTopic(currentParentId);
 
     if (!existing) {
       // Create new topic
