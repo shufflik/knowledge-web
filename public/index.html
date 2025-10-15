@@ -15,16 +15,49 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-      // Ensure full screen inside Telegram and lock zoom
+      // Safe Telegram WebApp initialization - only loads inside Telegram
       (function(){
-        try {
-          var wa = window.Telegram && window.Telegram.WebApp;
-          if (wa && typeof wa.expand === 'function') {
-            wa.expand();
+        // Check if we're inside Telegram WebApp
+        var isTelegramWebApp = window.location.search.includes('tgWebAppData') || 
+                               window.location.search.includes('tgWebAppVersion') ||
+                               window.parent !== window;
+        
+        if (!isTelegramWebApp) {
+          console.log('[Dev] Running outside Telegram WebApp - skipping Telegram API initialization');
+          return;
+        }
+
+        // Load Telegram WebApp script dynamically
+        var script = document.createElement('script');
+        script.src = 'https://telegram.org/js/telegram-web-app.js';
+        script.async = true;
+        script.onload = function() {
+          try {
+            var wa = window.Telegram && window.Telegram.WebApp;
+            if (wa) {
+              // Expand to maximum height
+              if (typeof wa.expand === 'function') {
+                wa.expand();
+              }
+              // Disable vertical swipes (prevents closing on swipe down)
+              if (typeof wa.disableVerticalSwipes === 'function') {
+                wa.disableVerticalSwipes();
+              }
+              // Request fullscreen mode (Bot API 8.0+)
+              if (typeof wa.requestFullscreen === 'function') {
+                wa.requestFullscreen();
+              }
+              console.log('[Telegram] WebApp initialized successfully');
+            }
+          } catch(e) {
+            console.error('[Telegram] WebApp initialization error:', e);
           }
-        } catch(e) {}
+        };
+        script.onerror = function() {
+          console.error('[Telegram] Failed to load telegram-web-app.js');
+        };
+        document.head.appendChild(script);
       })();
     </script>
     <!--

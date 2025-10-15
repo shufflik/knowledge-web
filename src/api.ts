@@ -1,24 +1,6 @@
 import { Note, Topic } from './types';
 import { API_BASE_URL, API_TIMEOUT_MS } from './config';
 
-// Telegram WebApp types
-declare global {
-  interface Window {
-    Telegram?: {
-      WebApp?: {
-        initData: string;
-        SettingsButton?: {
-          show: () => void;
-          hide: () => void;
-          onClick: (callback: () => void) => void;
-          offClick: (callback: () => void) => void;
-        };
-        showAlert: (message: string, callback?: () => void) => void;
-      };
-    };
-  }
-}
-
 // Backend API base URL and timeout are configured in src/config.ts
 
 async function fetchWithTimeout(input: RequestInfo | URL, init?: RequestInit, timeoutMs: number = API_TIMEOUT_MS): Promise<Response> {

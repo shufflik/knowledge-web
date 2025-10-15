@@ -26,30 +26,67 @@ function App() {
 
   React.useEffect(() => { saveState(state); }, [state]);
 
+  // Инициализация Telegram WebApp при монтировании компонента
+  React.useEffect(() => {
+    try {
+      const tg = window.Telegram?.WebApp;
+      if (!tg) return;
+
+      // Expand to maximum height
+      if (typeof tg.expand === 'function') {
+        tg.expand();
+      }
+
+      // Disable vertical swipes to prevent webapp closing on swipe down
+      if (typeof tg.disableVerticalSwipes === 'function') {
+        tg.disableVerticalSwipes();
+      }
+
+      // Request fullscreen mode (Bot API 8.0+)
+      if (typeof tg.requestFullscreen === 'function') {
+        tg.requestFullscreen();
+      }
+
+      // Ready signal to Telegram
+      if (typeof tg.ready === 'function') {
+        tg.ready();
+      }
+    } catch (error) {
+      console.error('[Telegram] Initialization error in React:', error);
+    }
+  }, []);
+
   // Настройка кнопки Settings в Telegram
   React.useEffect(() => {
-    const tg = window.Telegram?.WebApp;
-    if (!tg?.SettingsButton) return;
+    try {
+      const tg = window.Telegram?.WebApp;
+      if (!tg?.SettingsButton) return;
 
-    const handleSettingsClick = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const screenInfo = `Размер экрана:\n${width} × ${height}px\n\nViewport: ${window.screen.width} × ${window.screen.height}px`;
-      
-      if (tg.showAlert) {
-        tg.showAlert(screenInfo);
-      } else {
-        alert(screenInfo);
-      }
-    };
+      const handleSettingsClick = () => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const isFullscreen = tg.isFullscreen || false;
+        const isExpanded = tg.isExpanded || false;
+        const isVerticalSwipesEnabled = tg.isVerticalSwipesEnabled !== undefined ? tg.isVerticalSwipesEnabled : 'unknown';
+        const screenInfo = `Размер экрана:\n${width} × ${height}px\n\nViewport: ${window.screen.width} × ${window.screen.height}px\n\nFullscreen: ${isFullscreen}\nExpanded: ${isExpanded}\nVertical swipes: ${isVerticalSwipesEnabled}`;
+        
+        if (tg.showAlert) {
+          tg.showAlert(screenInfo);
+        } else {
+          alert(screenInfo);
+        }
+      };
 
-    tg.SettingsButton.show();
-    tg.SettingsButton.onClick(handleSettingsClick);
+      tg.SettingsButton.show();
+      tg.SettingsButton.onClick(handleSettingsClick);
 
-    return () => {
-      tg.SettingsButton?.hide();
-      tg.SettingsButton?.offClick(handleSettingsClick);
-    };
+      return () => {
+        tg.SettingsButton?.hide();
+        tg.SettingsButton?.offClick(handleSettingsClick);
+      };
+    } catch (error) {
+      console.error('[Telegram] Settings button error:', error);
+    }
   }, []);
 
   
