@@ -28,6 +28,18 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
 
   const textRef = React.useRef<HTMLTextAreaElement | null>(null);
 
+  // Block body scroll when topic modal is open
+  React.useEffect(() => {
+    if (showTopicSuggest) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showTopicSuggest]);
+
   React.useLayoutEffect(() => {
     const el = textRef.current;
     if (!el) return;
@@ -258,19 +270,49 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
       <div className="divider" />
 
       <div className="row" style={{ gap: 'clamp(6px, 2vw, 8px)', flexWrap: 'wrap' }}>
-        <div style={{ flex: 1, minWidth: 0, position: 'relative' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <input
             className="inline-input"
             placeholder="Выберите тему"
             value={topicPath}
-            onChange={e => { setTopicPath(e.target.value); setShowTopicSuggest(true); if (errors.topic && (e.target.value.trim() || topicId)) setErrors(prev => ({ ...prev, topic: undefined })); }}
+            onChange={e => { setTopicPath(e.target.value); if (errors.topic && (e.target.value.trim() || topicId)) setErrors(prev => ({ ...prev, topic: undefined })); }}
             onFocus={() => setShowTopicSuggest(true)}
-            onBlur={() => setTimeout(() => setShowTopicSuggest(false), 120)}
             aria-invalid={!!errors.topic}
             style={errors.topic ? { borderColor: '#ff6b6b' } : undefined}
+            readOnly
+            onClick={() => setShowTopicSuggest(true)}
           />
-          {showTopicSuggest && (
-            <div className="dropdown-suggest">
+          {errors.topic && (
+            <div style={{ color: '#ff6b6b', fontSize: 'clamp(11px, 2.4vw, 12px)', marginTop: 'clamp(3px, 1vw, 4px)' }}>{errors.topic}</div>
+          )}
+        </div>
+
+        <label className="pill" style={{ cursor: 'pointer' }}>
+          Прикрепить файлы
+          <input type="file" multiple style={{ display: 'none' }} onChange={onFileChange} />
+        </label>
+      </div>
+
+      {/* Topic selector modal */}
+      {showTopicSuggest && (
+        <div className="modal-overlay" onClick={() => setShowTopicSuggest(false)}>
+          <div className="topic-modal" onClick={e => e.stopPropagation()}>
+            <div style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+              <div style={{ fontWeight: 600, marginBottom: 12 }}>Выберите или создайте тему</div>
+              <input
+                className="inline-input"
+                placeholder="Поиск или создание темы..."
+                value={topicPath}
+                onChange={e => { setTopicPath(e.target.value); if (errors.topic && (e.target.value.trim() || topicId)) setErrors(prev => ({ ...prev, topic: undefined })); }}
+                autoFocus
+              />
+            </div>
+            <div style={{ 
+              maxHeight: 'min(400px, 50vh)', 
+              overflowY: 'auto', 
+              overflowX: 'hidden',
+              overscrollBehavior: 'contain'
+            }}>
               {(() => {
                 const idToTopic = new Map<string, Topic>();
                 topics.forEach(t => idToTopic.set(t.id, t));
@@ -287,7 +329,7 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
                 const paths = topics.map(t => buildPath(t.id));
                 const q = topicPath.trim().toLowerCase();
                 const filtered = q ? paths.filter(p => p.toLowerCase().includes(q)) : paths;
-                const unique = Array.from(new Set(filtered)).slice(0, 20);
+                const unique = Array.from(new Set(filtered)).slice(0, 50);
                 const items = unique.length > 0 ? unique : [];
                 const createItem = q && !paths.some(p => p.toLowerCase() === q) ? q : '';
                 return (
@@ -295,20 +337,27 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
                     {createItem && (
                       <div
                         className="dropdown-item"
-                        onMouseDown={() => {
+                        onClick={() => {
                           setTopicPath(createItem);
+                          setShowTopicSuggest(false);
                           if (errors.topic) setErrors(prev => ({ ...prev, topic: undefined }));
                         }}
+                        style={{ 
+                          background: 'rgba(59, 130, 246, 0.1)', 
+                          borderBottom: '1px solid rgba(255,255,255,0.08)',
+                          fontWeight: 500
+                        }}
                       >
-                        Создать/выбрать: {createItem}
+                        ✨ Создать: {createItem}
                       </div>
                     )}
                     {items.map(p => (
                       <div
                         key={p}
                         className="dropdown-item"
-                        onMouseDown={() => {
+                        onClick={() => {
                           setTopicPath(p);
+                          setShowTopicSuggest(false);
                           if (errors.topic) setErrors(prev => ({ ...prev, topic: undefined }));
                         }}
                       >
@@ -316,23 +365,22 @@ export function NoteEditor({ mode, topics, note, onCancel, onSave, onEnsureTopic
                       </div>
                     ))}
                     {!createItem && items.length === 0 && (
-                      <div className="dropdown-item" style={{ opacity: 0.7 }}>Нет вариантов</div>
+                      <div className="dropdown-item" style={{ opacity: 0.7, textAlign: 'center' }}>
+                        {q ? 'Нет совпадений' : 'Нет тем'}
+                      </div>
                     )}
                   </>
                 );
               })()}
             </div>
-          )}
-          {errors.topic && (
-            <div style={{ color: '#ff6b6b', fontSize: 'clamp(11px, 2.4vw, 12px)', marginTop: 'clamp(3px, 1vw, 4px)' }}>{errors.topic}</div>
-          )}
+            <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <button className="pill" onClick={() => setShowTopicSuggest(false)} style={{ width: '100%' }}>
+                Закрыть
+              </button>
+            </div>
+          </div>
         </div>
-
-        <label className="pill" style={{ cursor: 'pointer' }}>
-          Прикрепить файлы
-          <input type="file" multiple style={{ display: 'none' }} onChange={onFileChange} />
-        </label>
-      </div>
+      )}
 
       {attachments.length > 0 && (
         <div className="row" style={{ marginTop: 'clamp(6px, 2vw, 8px)', flexWrap: 'wrap', gap: 'clamp(6px, 2vw, 8px)' }}>

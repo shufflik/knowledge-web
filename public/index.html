@@ -5,6 +5,12 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
+    <!-- Disable pull-to-refresh -->
+    <style>
+      html, body {
+        overscroll-behavior-y: contain;
+      }
+    </style>
     <meta
       name="description"
       content="Web site created using create-react-app"
