@@ -46,41 +46,42 @@ export function TopBar({ topics, selectedTopicId, onSelectTopic, searchQuery, on
           </div>
           {/* {errorText && <div className="error-text">{errorText}</div>} */}
           {mode === 'topics' && (
-            <div style={{ marginTop: 8, textAlign: 'center' }}>
+            <div style={{ marginTop: 'clamp(5px, 2vw, 8px)', textAlign: 'center' }}>
               {!showTopicPicker ? (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <button
                     className="pill"
                     style={{
-                      display: 'inline-block',
-                      margin: '0 auto',
+                      flex: 1,
                       textAlign: 'center',
-                      minWidth: '94%',
                       maxWidth: '100%',
-                      width: 'auto'
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      boxSizing: 'border-box'
                     }}
                     onClick={() => setShowTopicPicker(true)}
                   >
                     {selectedTopicName ? truncateMiddle(selectedTopicName, 40) : 'Выберите тему'} 
-                    <span style={{ opacity: 0.8, marginLeft: 6 }}>▼</span>
+                    <span style={{ opacity: 0.8, marginLeft: 'clamp(3px, 1.3vw, 6px)' }}>▼</span>
                   </button>
                 </div>
               ) : (
                 <div className="topic-dropdown">
-                  <div style={{ textAlign: 'center', marginBottom: 6 }}>
+                  <div style={{ textAlign: 'center', marginBottom: 'clamp(3px, 1.3vw, 6px)' }}>
                     <button className="pill" onClick={() => setShowTopicPicker(false)}>Свернуть</button>
                   </div>
                   {topicsLoading ? (
-                    <div className="card" style={{ padding: 16, textAlign: 'center' }}>
-                      <div className="spinner spinner--sm" style={{ margin: '12px auto' }} />
-                      <div style={{ opacity: 0.8, fontSize: 13 }}>Загрузка тем…</div>
+                    <div className="card" style={{ textAlign: 'center' }}>
+                      <div className="spinner spinner--sm" style={{ margin: 'clamp(8px, 2.7vw, 12px) auto' }} />
+                      <div style={{ opacity: 0.8, fontSize: 'clamp(11px, 2.4vw, 13px)' }}>Загрузка тем…</div>
                     </div>
                   ) : topicsError ? (
-                    <div className="card" style={{ padding: 16, textAlign: 'center' }}>
-                      <div style={{ color: '#ff6b6b', marginBottom: 6 }}>Не удалось загрузить темы</div>
+                    <div className="card" style={{ textAlign: 'center' }}>
+                      <div style={{ color: '#ff6b6b', marginBottom: 'clamp(3px, 1.3vw, 6px)' }}>Не удалось загрузить темы</div>
                     </div>
                   ) : topics.length === 0 ? (
-                    <div className="card" style={{ padding: 16, textAlign: 'center', opacity: 0.8 }}>Тем нет</div>
+                    <div className="card" style={{ textAlign: 'center', opacity: 0.8 }}>Тем нет</div>
                   ) : (
                     <TopicNavigator topics={topics} onSelectTopic={(id) => { onSelectTopic(id); setShowTopicPicker(false); }} onEditTopic={onEditTopic} />
                   )}

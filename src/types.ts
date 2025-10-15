@@ -2,6 +2,7 @@ export type Topic = {
   id: string;
   name: string;
   parentId?: string | null;
+  color?: string;
   createdAt: number;
   updatedAt: number;
 };

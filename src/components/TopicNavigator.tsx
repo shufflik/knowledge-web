@@ -1,6 +1,6 @@
 import React from 'react';
 import { Topic } from '../types';
-import { EditIcon } from './Icons';
+import { EditIcon, FolderIcon, ChevronDownIcon } from './Icons';
 
 type Props = {
   topics: Topic[];
@@ -14,11 +14,13 @@ function findById(topics: Topic[], id: string | null): Topic | undefined {
 
 function truncateMiddle(text: string, maxLen = 40): string {
   if (text.length <= maxLen) return text;
-  const keep = maxLen - 2; // account for '..'
+  const keep = maxLen - 2;
   const left = Math.ceil(keep / 2);
   const right = Math.floor(keep / 2);
   return text.slice(0, left) + '..' + text.slice(text.length - right);
 }
+
+const FOLDER_GRADIENT = 'linear-gradient(135deg,rgb(52, 153, 254) 0%,rgb(157, 44, 244) 100%)';
 
 export function TopicNavigator({ topics, onSelectTopic, onEditTopic }: Props) {
   const [currentId, setCurrentId] = React.useState<string | null>(null);
@@ -65,31 +67,37 @@ export function TopicNavigator({ topics, onSelectTopic, onEditTopic }: Props) {
 
       <div className="topic-list">
         {children.length === 0 && (
-          <div style={{ opacity: 0.7 }}>Нет вложенных тем</div>
+          <div style={{ opacity: 0.7, padding: '1rem' }}>Нет вложенных тем</div>
         )}
-        {children.map(c => (
-          <div
-            key={c.id}
-            className="row"
-            style={{ justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', padding: '3px 0' }}
-            onClick={() => (hasChildren(c.id) ? setCurrentId(c.id) : onSelectTopic(c.id))}
-          >
-            <div className="pill" style={{ pointerEvents: 'none' }}>{truncateMiddle(c.name)}</div>
-            <div className="row" style={{ alignItems: 'center', gap: 6 }}>
-              {onEditTopic && (
-                <button
-                  className="icon-button"
-                  title="Редактировать тему"
-                  aria-label="Редактировать тему"
-                  onClick={(e) => { e.stopPropagation(); onEditTopic(c.id); }}
-                >
-                  <EditIcon />
-                </button>
-              )}
-              {hasChildren(c.id) && <span style={{ opacity: 0.7 }}>›</span>}
+        {children.map((c) => {
+          return (
+            <div
+              key={c.id}
+              className="topic-item"
+              onClick={() => (hasChildren(c.id) ? setCurrentId(c.id) : onSelectTopic(c.id))}
+            >
+              <div className="topic-icon-wrapper" style={{ background: FOLDER_GRADIENT }}>
+                <FolderIcon size={16} color="#ffffff" />
+              </div>
+              <div className="topic-name">{c.name}</div>
+              <div className="topic-actions">
+                {hasChildren(c.id) && (
+                  <ChevronDownIcon size={16} color="rgba(255, 255, 255, 0.5)" />
+                )}
+                {onEditTopic && (
+                  <button
+                    className="icon-button"
+                    title="Редактировать тему"
+                    aria-label="Редактировать тему"
+                    onClick={(e) => { e.stopPropagation(); onEditTopic(c.id); }}
+                  >
+                    <EditIcon size={16} color="rgba(255, 255, 255, 0.5)" />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

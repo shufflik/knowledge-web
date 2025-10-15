@@ -17,8 +17,9 @@
 
 .screen-content {
   flex: 1;
-  padding: 16px;
+  padding: clamp(10px, 3.7vw, 16px);
   padding-bottom: var(--bottom-bar-space); /* space for bottom bar */
+  box-sizing: border-box;
 }
 
 .screen-content.center {
@@ -26,7 +27,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: clamp(8px, 2.7vw, 12px);
   padding-bottom: var(--bottom-bar-space);
   overflow: hidden;
 }
@@ -36,12 +37,19 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(20,20,26,0.9);
-  border-top: 1px solid rgba(255,255,255,0.08);
-  padding: 12px 16px;
+  background: transparent;
+  border-top: none;
+  padding: clamp(8px, 2.7vw, 12px) clamp(10px, 3.7vw, 16px);
   display: flex;
   justify-content: center;
-  backdrop-filter: blur(8px);
+  box-sizing: border-box;
+}
+
+/* Скрывать bottom-bar на маленьких высотах экрана (когда клавиатура открыта) */
+@media (max-height: 500px) {
+  .bottom-bar {
+    display: none;
+  }
 }
 
 .overlay-blocker {
@@ -126,13 +134,18 @@
 .primary-button {
   appearance: none;
   border: none;
-  border-radius: 14px;
-  padding: 14px 18px;
-  font-size: 16px;
+  border-radius: clamp(8px, 3.2vw, 14px);
+  padding: clamp(10px, 3.2vw, 14px) clamp(14px, 4.1vw, 18px);
+  font-size: clamp(14px, 3.7vw, 16px);
   font-weight: 600;
   background: linear-gradient(135deg, #4f46e5, #06b6d4);
   color: #fff;
-  box-shadow: 0 10px 30px rgba(79,70,229,0.35);
+  box-shadow: 0 clamp(6px, 2.3vw, 10px) clamp(18px, 6.9vw, 30px) rgba(79,70,229,0.35);
+  box-sizing: border-box;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  max-width: clamp(200px, 46vw, 240px);
 }
 
 .search-wrap {
@@ -203,10 +216,11 @@
 .card {
   background: #14151a;
   border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: clamp(5px, 2vw, 12px);
+  padding: clamp(5px, 2vw, 12px);
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent; /* remove mobile tap highlight */
+  overflow-x: hidden;
 }
 
 /* Also remove tap highlight for descendants to avoid gray overlay on long-press */
@@ -394,7 +408,8 @@
 .topic-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: clamp(2px, 1.3vw, 8px);
+  box-sizing: border-box;
 }
 
 .pill {
@@ -402,19 +417,25 @@
   border: 1px solid rgba(255,255,255,0.06);
   color: #eaeaf0;
   border-radius: 999px;
-  padding: 8px 12px;
+  padding: clamp(3px, 1.3vw, 8px) clamp(5px, 2vw, 12px);
+  font-size: clamp(11px, 2.4vw, 15px);
+  box-sizing: border-box;
 }
 
 .icon-button {
   background: #1b1d24;
   border: 1px solid rgba(255,255,255,0.08);
   color: #eaeaf0;
-  width: 40px;
-  height: 40px;
+  width: clamp(22px, 5.8vw, 25px);
+  height: clamp(22px, 5.8vw, 25px);
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .inline-input {

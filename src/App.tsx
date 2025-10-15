@@ -339,7 +339,7 @@ function App() {
       <MobileLayout onCreate={onCreate} centerContent={layoutCenter} showCreate={isMainMenu} loading={loading}>
       {editor.type === 'closed' && (
         <>
-          <div style={{ position: 'relative', width: 'min(76vw, 520px)', margin: '0 auto' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '520px', margin: '0 auto', padding: '0 clamp(1px, 1.3vw, 8px)', boxSizing: 'border-box' }}>
             <TopBar
               topics={state.topics}
               selectedTopicId={selectedTopicId}
