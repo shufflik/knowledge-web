@@ -1,7 +1,12 @@
 import { Note, Topic } from './types';
 import { API_BASE_URL, API_TIMEOUT_MS } from './config';
+import { USE_MOCK_DATA } from './mockData';
+
+// Mock API import (conditional)
+import * as MockAPI from './api.mock';
 
 // Backend API base URL and timeout are configured in src/config.ts
+// To use mock data: set USE_MOCK_DATA = true in src/mockData.ts
 
 async function fetchWithTimeout(input: RequestInfo | URL, init?: RequestInit, timeoutMs: number = API_TIMEOUT_MS): Promise<Response> {
   const controller = new AbortController();
@@ -77,6 +82,10 @@ export type SearchNotesResponse = {
 };
 
 export async function searchNotesApi(req: SearchNotesRequest): Promise<SearchNotesResponse> {
+  if (USE_MOCK_DATA) {
+    return MockAPI.searchNotesApi(req);
+  }
+
   const { q, topicId, offset = 0, limit = 50 } = req;
   
   const params = new URLSearchParams();
@@ -109,6 +118,11 @@ export async function searchNotesApi(req: SearchNotesRequest): Promise<SearchNot
 export type SaveNoteResponse = { ok: boolean };
 
 export async function saveNoteApi(note: Note): Promise<SaveNoteResponse> {
+  if (USE_MOCK_DATA) {
+    await MockAPI.saveNoteApi(note);
+    return { ok: true };
+  }
+
   const response = await fetchWithTimeout(`${API_BASE_URL}/notes`, {
     method: 'POST',
     headers: getAuthHeaders(),
@@ -133,6 +147,11 @@ export async function saveNoteApi(note: Note): Promise<SaveNoteResponse> {
 }
 
 export async function updateNoteApi(note: Note): Promise<SaveNoteResponse> {
+  if (USE_MOCK_DATA) {
+    await MockAPI.updateNoteApi(note);
+    return { ok: true };
+  }
+
   const response = await fetchWithTimeout(`${API_BASE_URL}/notes/${note.id}`, {
     method: 'PUT',
     headers: getAuthHeaders(),
@@ -157,6 +176,11 @@ export async function updateNoteApi(note: Note): Promise<SaveNoteResponse> {
 }
 
 export async function deleteNoteApi(noteId: string): Promise<SaveNoteResponse> {
+  if (USE_MOCK_DATA) {
+    await MockAPI.deleteNoteApi(noteId);
+    return { ok: true };
+  }
+
   const response = await fetchWithTimeout(`${API_BASE_URL}/notes/${noteId}`, {
     method: 'DELETE',
     headers: getAuthHeaders()
@@ -167,6 +191,10 @@ export async function deleteNoteApi(noteId: string): Promise<SaveNoteResponse> {
 }
 
 export async function toggleNoteFavoriteApi(noteId: string, isFavorite: boolean): Promise<{ note: Note }> {
+  if (USE_MOCK_DATA) {
+    return MockAPI.toggleNoteFavoriteApi(noteId, isFavorite);
+  }
+
   const response = await fetchWithTimeout(`${API_BASE_URL}/notes/${noteId}/favorite`, {
     method: 'PATCH',
     headers: getAuthHeaders(),
@@ -190,6 +218,11 @@ export type GetTopicsResponse = {
 };
 
 export async function getTopicsApi(): Promise<GetTopicsResponse> {
+  if (USE_MOCK_DATA) {
+    const data = await MockAPI.getTopicsApi();
+    return { topics: data.topics };
+  }
+
   const response = await fetchWithTimeout(`${API_BASE_URL}/topics`, {
     headers: getAuthHeaders()
   });
@@ -215,6 +248,10 @@ export type EnsurePathResponse = {
 };
 
 export async function ensureTopicPathApi(req: EnsurePathRequest): Promise<EnsurePathResponse> {
+  if (USE_MOCK_DATA) {
+    return MockAPI.ensureTopicPathApi(req);
+  }
+
   const response = await fetchWithTimeout(`${API_BASE_URL}/topics/ensure-path`, {
     method: 'POST',
     headers: getAuthHeaders(),
@@ -235,6 +272,10 @@ export async function ensureTopicPathApi(req: EnsurePathRequest): Promise<Ensure
 
 
 export async function deleteTopicApi(id: string): Promise<{ ok: boolean }> {
+  if (USE_MOCK_DATA) {
+    return MockAPI.deleteTopicApi(id);
+  }
+
   const response = await fetchWithTimeout(`${API_BASE_URL}/topics/${id}`, {
     method: 'DELETE',
     headers: getAuthHeaders()
