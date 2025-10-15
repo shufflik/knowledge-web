@@ -8,6 +8,7 @@
   gap: 12px;
   max-width: 400px;
   pointer-events: none;
+  margin-top: 40px
 }
 
 .toast {

@@ -29,7 +29,7 @@ export function TopBar({ topics, selectedTopicId, onSelectTopic, searchQuery, on
 
   return (
     <div className="topbar">
-      <div className={`topbar-inner ${center ? 'center-onboarding' : ''}`}>
+      <div className={`topbar-inner ${center ? 'center-onboarding' : 'center-margin'}`}>
         {/* Unified field */}
         <div className="field-col">
           <div className="input-ghost" style={{ flex: 1 }}>

@@ -158,6 +158,10 @@
   align-items: center;
 }
 
+.center-margin {
+  margin-top: 40px;
+}
+
 /* Topic item styles */
 .topic-item {
   display: flex;
